@@ -2,75 +2,154 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-	<h2>Checkout Page :</h2>
-     <div class="row">
-		<div class="col-lg-6">
-			<div class="box-element" id="form-wrapper">
-				<form method="POST" action="{% url 'checkout'%}">
-					{% csrf_token %}
-					{{ form|crispy }}
-					<br>
-					<input type="submit" class="btn btn-primary mb-2" name="submit" , value='Add Address'>	
-				</form>
-			</div>
-		</div>
+<div class="container-fluid">
+    <h2 class="mb-4">Checkout</h2>
+    
+    <div class="row">
+        <!-- Address Form Column -->
+        <div class="col-lg-6 mb-4">
+            <div class="box-element p-4 shadow-sm" id="form-wrapper" style="border-radius: 8px;">
+                <h4 class="mb-4">Shipping Information</h4>
+                <form method="POST" action="{% url 'checkout'%}">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-map-marker-alt me-2"></i>Add Address
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
-		<div class="col-lg-6">
-			<div class="box-element">
-				<a  class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
-				<hr>
-				<h3>Order Summary</h3>
-				<hr>
-				{% for item in items %}
-					<div class="cart-row" style="background-color: lightyellow;height: 80px">
-						<div style="flex:2"><a href="{% url 'item_detail' item.product.id %}"><img class="row-image" src="{{ item.product.get_imageURL }}" style="width: 80px; height: 80px;margin-left: 20px"></a></div>
-						<div style="flex:2"><p>{{item.product.name}}</p></div>
-						<div style="flex:1"><p>&#8377;{{item.product.price|floatformat:2}}</p></div>
-						<div style="flex:1"><p>x{{item.quantity}}</p></div>
-					</div>
-				{% endfor %}
-				<h5>Items:   {{total_item_cart}}</h5>
-				<h5>Total:   &#8377;{{total_cost_cart}}</h5>
-			</div>
-		</div>
-	</div>
+        <!-- Order Summary Column -->
+        <div class="col-lg-6 mb-4">
+            <div class="box-element p-4 shadow-sm" style="border-radius: 8px;">
+                <a class="btn btn-outline-dark mb-3" href="{% url 'cart' %}">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Cart
+                </a>
+                <hr>
+                <h3 class="mb-3">Order Summary</h3>
+                <hr>
+                {% for item in items %}
+                <div class="cart-row p-3 mb-2" style="background-color: rgba(255, 255, 224, 0.5); border-radius: 5px; transition: all 0.3s ease;">
+                    <div style="flex:2" class="d-flex align-items-center">
+                        <a href="{% url 'item_detail' item.product.id %}">
+                            <img class="row-image img-thumbnail" src="{{ item.product.get_imageURL }}" 
+                                 style="width: 80px; height: 80px; object-fit: contain; border: 1px solid #ddd;">
+                        </a>
+                    </div>
+                    <div style="flex:2" class="d-flex align-items-center">
+                        <p class="mb-0">{{item.product.name}}</p>
+                    </div>
+                    <div style="flex:1" class="d-flex align-items-center">
+                        <p class="mb-0">&#8377;{{item.product.price|floatformat:2}}</p>
+                    </div>
+                    <div style="flex:1" class="d-flex align-items-center">
+                        <p class="mb-0">x{{item.quantity}}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="mt-4 pt-3 border-top">
+                    <h5 class="d-flex justify-content-between">
+                        <span>Items:</span>
+                        <span>{{total_item_cart}}</span>
+                    </h5>
+                    <h4 class="d-flex justify-content-between mt-3">
+                        <span>Total:</span>
+                        <span class="text-success">&#8377;{{total_cost_cart}}</span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<br>
-	<br>
-	{% if request.user.is_authenticated %}
-				<h6>Use below Addresses</h6>
-				<div class="box-element">
-					{% for adr in addresses %}
-						<div class="cart-row">
-							<div>
-								<h4><strong><p>{{adr.recepient_fullname}}</p></strong></h4>
-								<div>  Phone Number :-> {{adr.phone_no}}</div>
-								<pre class="quantity"> {{adr.address_line1}},</pre>
-								<pre class="quantity">{{adr.address_line2}},</pre>
-								<pre class="quantity">{{adr.city}},</pre>
-								<pre class="quantity">{{adr.state}},</pre>
-								<pre class="quantity">{{adr.country}},</pre>
-								<pre class="quantity">{{adr.zipcode}}</pre>
-								<br>
-								<div class="quantity">
-									<pre><a href="{% url 'make_payment' adr.id %}">Use</a></pre>
-								</div>
-								<div class="quantity">
-									<pre><a href="{% url 'update_address' adr.id %}">Edit</a></pre>
-								</div>
-								<div class="quantity">
-									<pre><a href="{% url 'delete_address' adr.id %}">Delete</a></pre>
-								</div>
-							</div>
-						</div>
-					{% endfor %}
-				</div>
-				<p>* It is static website , so once you will use one of the above addresses , you will not be directed to the payment gateway , instead , you will be directed to the PAYMENT SUCCESSFUL PAGE .</p>
-	{% endif %}
-	<br><br>
-	<blockquote class="blockquote text-center">
-		<p class="mb-0">** That's it! **</p>
-		<footer class="blockquote-footer"> You've scrolled to the end of the List!</footer>
-	</blockquote>
+    <!-- Saved Addresses Section -->
+    {% if request.user.is_authenticated and addresses %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <h4 class="mb-3"><i class="fas fa-address-book me-2"></i>Saved Addresses</h4>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>This is a static demo. Selecting an address will simulate a successful payment.
+            </div>
+            
+            <div class="row">
+                {% for adr in addresses %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="box-element p-3 h-100 address-card" style="border-radius: 8px; transition: all 0.3s ease;">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h5 class="mb-0"><strong>{{adr.recepient_fullname}}</strong></h5>
+                            <div class="btn-group">
+                                <a href="{% url 'update_address' adr.id %}" class="btn btn-sm btn-outline-secondary" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'delete_address' adr.id %}" class="btn btn-sm btn-outline-danger" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="address-details mb-3">
+                            <div class="mb-1"><i class="fas fa-phone me-2"></i>{{adr.phone_no}}</div>
+                            <div class="text-muted">
+                                <div>{{adr.address_line1}},</div>
+                                {% if adr.address_line2 %}<div>{{adr.address_line2}},</div>{% endif %}
+                                <div>{{adr.city}}, {{adr.state}}, {{adr.country}}</div>
+                                <div>{{adr.zipcode}}</div>
+                            </div>
+                        </div>
+                        <a href="{% url 'make_payment' adr.id %}" class="btn btn-success w-100 mt-2">
+                            <i class="fas fa-check-circle me-2"></i>Use This Address
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
 
+    <!-- End of Content Marker -->
+    <div class="text-center py-5">
+        <blockquote class="blockquote">
+            <p class="mb-0 text-muted">** That's it! **</p>
+            <footer class="blockquote-footer mt-2">You've reached the end of the checkout page</footer>
+        </blockquote>
+    </div>
+</div>
+
+<style>
+    /* Interactive Elements */
+    .address-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .cart-row:hover {
+        background-color: rgba(255, 255, 224, 0.7) !important;
+    }
+    
+    /* Form Styling */
+    #form-wrapper {
+        background-color: #f8f9fa;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .cart-row {
+            flex-direction: column !important;
+            height: auto !important;
+            text-align: center;
+        }
+        
+        .cart-row > div {
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        
+        .row-image {
+            margin-left: 0 !important;
+            margin-bottom: 10px;
+        }
+    }
+</style>
 {% endblock content %}

@@ -2,126 +2,346 @@
 {% load static %}
 <html>
 <head>
-	<title>Ecommerce</title>
+    <title>Ecommerce</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'store/css/main.css' %}">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<script src="https://maxscdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
-
-	<link rel="stylesheet" type="text/css" href="{% static 'store/css/main.css' %}">
-	<script type="text/javascript">
-		var user = '{{request.user}}'
-	</script>
-	<style>
-
-		.dropdown {
-		  position: relative;
-		  display: inline-block;
-		}
-
-		.dropdown-content {
-		  display: none;
-		  position: absolute;
-		  background-color: #f1f1f1;
-		  min-width: 180px;
-		  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		  z-index: 1;
-		}
-
-		.dropdown-content a {
-		  color: black;
-		  padding: 8px 16px;
-		  text-decoration: none;
-		  display: block;
-		}
-
-		.dropdown-content a:hover {background-color: #ddd;}
-
-		.dropdown:hover .dropdown-content {display: block;}
-
-
-</style>
-
+    <script type="text/javascript">
+        var user = '{{request.user}}'
+    </script>
+    
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 1rem;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a1a2e 100%) !important;
+        }
+        
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.05);
+            color: #f8f9fa !important;
+        }
+        
+        .nav-link {
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem !important;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        /* Smooth Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown h5 a {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown h5 a:hover {
+            color: #17a2b8 !important;
+        }
+        
+        .dropdown-content {
+            display: block;
+            position: absolute;
+            background-color: #fff;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-5px);
+            transition: all 0.2s ease;
+            pointer-events: none;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f8f9fa;
+            color: #17a2b8;
+            border-left: 3px solid #17a2b8;
+            padding-left: 20px;
+        }
+        
+        /* Search Form */
+        .form-control {
+            border-radius: 20px;
+            border: 1px solid #ced4da;
+            padding: 0.375rem 1.25rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #17a2b8;
+            box-shadow: 0 0 0 0.2rem rgba(23, 162, 184, 0.25);
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            border-radius: 20px;
+            padding: 0.375rem 1.25rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Cart Icon */
+        #cart-icon {
+            transition: all 0.3s ease;
+        }
+        
+        #cart-icon:hover {
+            transform: scale(1.1) rotate(-10deg);
+        }
+        
+        #cart-total {
+            display: inline-block;
+            text-align: center;
+            color: #fff;
+            background-color: #dc3545;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            font-size: 14px;
+            line-height: 25px;
+            margin-left: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        #cart-total:hover {
+            transform: scale(1.1);
+            background-color: #c82333;
+        }
+        
+        /* User Profile Image */
+        .navbar img {
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .navbar img:hover {
+            border-color: #17a2b8;
+            transform: scale(1.1);
+        }
+        
+        /* Jumbotron */
+        .jumbotron {
+            background-color: transparent;
+            padding: 2rem 1rem;
+            margin-bottom: 0;
+            flex: 1;
+        }
+        
+        .container-fluid {
+            padding: 0 15px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .navbar-brand {
+                font-size: 1.5rem;
+            }
+            
+            .nav-link {
+                font-size: 1rem;
+                padding: 0.5rem !important;
+            }
+            
+            .dropdown-content {
+                min-width: 180px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0.5rem;
+            }
+            
+            .form-inline {
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            
+            .form-inline .form-control, 
+            .form-inline .btn {
+                margin-bottom: 0.5rem;
+                width: 100%;
+            }
+            
+            .dropdown {
+                margin-bottom: 0.5rem;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fade-in">
+      <h5><strong><a class="navbar-brand pulse" href="{% url 'store' %}" style="color: white">Ecommerce</a></strong></h5>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <h5><strong><a class="navbar-brand" href="{% url 'store' %}" style="color: white">Ecommerce</a></strong></h5>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <h5><strong><a class="nav-link" href="{% url 'store' %}" style="color: white">Store <span class="sr-only">(current)</span></a></strong></h5>
+          </li>
+        </ul>
+        <div class="form-inline my-2 my-lg-0">
+            <form method="get" action="{% url 'search' %}" class="form-inline my-2 my-lg-0 mr-3">
+                <input type="search" name="search" aria-label="Search" placeholder="Search products..." class="form-control mr-sm-2">
+                <button class="btn btn-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
+            </form>
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
-	        <h5><strong><a class="nav-link" href="{% url 'store' %}" style="color: white">Store <span class="sr-only">(current)</span></a></strong></h5>
-	      </li>
-	 
-	    </ul>
-	    <div class="form-inline my-2 my-lg-0">
-	    	
-	    	<form method="get" action="{% url 'search' %}" class="form-inline my-2 my-lg-0">
-					<input type="search" name="search" aria-label="Search" placeholder="Search" class="form-control mr-sm-2">
-					<button class="btn btn-success my-2 mr-sm-3" type="submit">Search</button>
-			</form>
+            <div class="dropdown mr-3">
+                <h5><strong><a style="color: white"><i class="fas fa-list"></i> Categories</a></strong></h5>
+                <div class="dropdown-content">
+                    {% for product in product_categories %}
+                        <a href="{% url 'show_items' product.id %}"><i class="fas fa-chevron-right mr-2"></i>{{product.name}}</a>
+                    {% endfor%}
+                </div>
+            </div>
+            
+            {% if request.user.is_authenticated %}
+                <h5 class="mr-3"><strong><a href="{% url 'order_details' %}" style="color: white"><i class="fas fa-clipboard-list"></i> Orders</a></strong></h5>
+                <h5 class="mr-3"><strong><a href="{% url 'user_logout' %}" style="color: white"><i class="fas fa-sign-out-alt"></i> Logout</a></strong></h5>
+                {% if request.user.profile.photo %}
+                    <a href="{% url 'profilepage' username=user.username %}"><img class="mr-1" src="{{ request.user.profile.photo.url }}" width="35" height="35"></a>
+                {% else %}
+                    <a href="{% url 'profilepage' username=user.username %}"><img class="mr-1" src="/static/images/default.png" width="35" height="35"></a>
+                {% endif %}
+                <h5><strong><a href="{% url 'profilepage' username=request.user.username %}" style="color: white">{{request.user.username}}</a></strong></h5>
+            {% else %}
+                <h5 class="mr-3"><strong><a href="{% url 'user_login' %}" style="color: white"><i class="fas fa-sign-in-alt"></i> Login</a></strong></h5>
+                <div>
+                    <h5 class="mr-3"><strong><a href="{% url 'register' %}" style="color: white"><i class="fas fa-user-plus"></i> SignUp</a></strong></h5>
+                </div>
+            {% endif %}
+            
+            <div class="d-flex align-items-center ml-2">
+                <a href="{% url 'cart' %}">
+                    <img id="cart-icon" src="{% static 'images/cart.png' %}">
+                </a>
+                <p id="cart-total">{{total_item_cart}}</p>
+            </div>
+        </div>
+      </div>
+    </nav>
 
-			<div class="dropdown mr-sm-3">
-					  <h5><strong><a style="color: white">Categories</a></strong></h5>
-					  <div class="dropdown-content">
-					    {% for product in product_categories %}
-					    	<a href="{% url 'show_items' product.id %}">{{product.name}}</a>
-					    {% endfor%}
-					  </div>
-			</div>
-	    	{% if request.user.is_authenticated %}
-	     		<h5 class="mr-sm-3"><strong><a href="{% url 'order_details' %}" style="color: white">Orders</a></strong></h5>
-	     		<h5 class="mr-sm-3"><strong><a href="{% url 'user_logout' %}" style="color: white">Logout</a></strong></h5>
-	     		{% if request.user.profile.photo %}
-					<a href="{% url 'profilepage' username=user.username %}"><img class="mr-sm-1" src="{{ request.user.profile.photo.url }}" width="35" height="35"></a>
-				{% else %}
-					<a href="{% url 'profilepage' username=user.username %}"><img class="mr-sm-1" src="/static/images/default.png" width="35" , height="35"></a>
-				{% endif %}
-		    	<h5><strong><a href="{% url 'profilepage' username=request.user.username %}" style="color: white">{{request.user.username}}</a></strong></h5>
-	     	
-	     	{% else %}
-	     		<h5 class="mr-sm-3"><strong><a href="{% url 'user_login' %}" style="color: white">Login</a></strong></h5>
-	     		<div>
-		     		<h5 class="mr-sm-3"><strong><a href="{% url 'register' %}" style="color: white">SignUp</a></strong></h5>
-	     		</div>
-	     	{% endif %}
-	     	<a href="{% url 'cart' %}">
-	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
-	    	</a>
-	    	<p id="cart-total">{{total_item_cart}}</p>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container container-fluid">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>© 2023 Ecommerce. No Copyright infringement intended!</p>
+    </footer>
 
-	    </div>
-	  </div>
-	</nav>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
-	<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> -->
-	<div class="jumbotron jumbotron-fluid">
-		<div class="container container-fluid">
-			{% block content %}
-			{% endblock %}
-		</div>
-	</div>
-	<footer class="footer">
-		<p style="text-align: center;">No CopyRight infringement intended!</p>
-	</footer>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	<script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
-	<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-
-	<script type="text/javascript" src="{% static 'store/js/main.js' %}"></script>
-	
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-
+    <!-- Custom JavaScript -->
+    <script type="text/javascript" src="{% static 'store/js/main.js' %}"></script>
 </body>
 </html>

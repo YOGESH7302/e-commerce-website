@@ -1,52 +1,118 @@
 {% extends 'store/main.html' %}
 {% block content %}
-    <h3>Ordered Items : </h3>
-    <br>
-    <div>
-        {% if request.user.is_authenticated %}
-            {% for order in ordered %}
-                <div class="box-element" style="background-color: lightgray" ">
-                        <div class="cart-row">
-                            <div style="flex:1">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h3 class="mb-4 text-center">Your Order History</h3>
+            
+            {% if request.user.is_authenticated %}
+                {% if ordered %}
+                    {% for order in ordered %}
+                    <div class="box-element mb-4 order-card" style="background-color: #f8f9fa; border-radius: 10px; transition: all 0.3s ease;">
+                        <div class="cart-row p-3" style="border-bottom: 1px solid #dee2e6;">
+                            <div class="order-header" style="flex:1">
                                 <strong>Order Placed</strong>
-                                <h6>{{ order.order.date_ordered | date:"d M Y"}} </h6>
+                                <h6 class="text-muted">{{ order.order.date_ordered|date:"d M Y" }}</h6>
                             </div>
-                            <div style="flex:1">
-                                <strong>Transaction Id</strong>
-                                <h6>{{order.order.transaction_id}}</h6>
+                            <div class="order-header" style="flex:1">
+                                <strong>Transaction ID</strong>
+                                <h6 class="text-muted">{{ order.order.transaction_id }}</h6>
                             </div>
-                            <div style="flex:1">
+                            <div class="order-header" style="flex:1">
                                 <strong>Total</strong>
-                                <h6>&#8377;{{order.order.amount}}</h6>
+                                <h6 class="text-primary">&#8377;{{ order.order.amount }}</h6>
                             </div>
-                            <div style="flex:1">
-                                <strong>Shipped to :</strong>
-                                <div>{{order.order.recepient_fullname}}({{order.order.phone_no}})</div>
-                                <div>{{order.order.address_line1}}, {{order.order.address_line2}}</div>
-                                <div>{{order.order.city}},{{order.order.state}},{{order.order.country}}</div>
-                                <div>{{order.order.zipcode}}</div>
+                            <div class="order-header" style="flex:1">
+                                <strong>Shipped to:</strong>
+                                <div class="text-muted">
+                                    <div>{{ order.order.recepient_fullname }} ({{ order.order.phone_no }})</div>
+                                    <div>{{ order.order.address_line1 }}, {{ order.order.address_line2 }}</div>
+                                    <div>{{ order.order.city }}, {{ order.order.state }}, {{ order.order.country }}</div>
+                                    <div>ZIP: {{ order.order.zipcode }}</div>
+                                </div>
                             </div>
                         </div>
-                    {% for item in order.items %}
-                        <div class="cart-row" style="background-color: lightblue;height: 80px">
-                            <div style="flex:1"><img style="width: 80px; height: 80px;margin-left: 20px" class="row-image" src="{{item.get_imageURL}}"></div>
-                            <div style="flex:1"><p>Product :{{item.name}}</p></div>
-                            <div style="flex:1"><p>Price :&#8377;{{item.price}}</p></div>
-                            <div style="flex:1">
-                                <p class="quantity">Quantity :{{item.quantity}}</p>
+                        
+                        {% for item in order.items %}
+                        <div class="cart-row p-3 item-row" style="background-color: rgba(173, 216, 230, 0.3); border-radius: 5px; margin: 10px; transition: all 0.3s ease;">
+                            <div style="flex:1" class="d-flex align-items-center">
+                                <img class="row-image img-thumbnail" src="{{ item.get_imageURL }}" 
+                                     style="width: 80px; height: 80px; object-fit: contain; border: 1px solid #ddd;">
                             </div>
-                            <div style="flex:1"><p>Total :${{item.get_total}}</p></div>
+                            <div style="flex:1" class="d-flex align-items-center">
+                                <p class="mb-0">{{ item.name }}</p>
+                            </div>
+                            <div style="flex:1" class="d-flex align-items-center">
+                                <p class="mb-0">&#8377;{{ item.price }}</p>
+                            </div>
+                            <div style="flex:1" class="d-flex align-items-center">
+                                <p class="quantity mb-0">Qty: {{ item.quantity }}</p>
+                            </div>
+                            <div style="flex:1" class="d-flex align-items-center">
+                                <p class="mb-0 text-success">&#8377;{{ item.get_total }}</p>
+                            </div>
                         </div>
+                        {% endfor %}
+                    </div>
                     {% endfor %}
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-box-open fa-4x text-muted mb-4"></i>
+                        <h4 class="text-muted">No orders found</h4>
+                        <p class="text-muted">You haven't placed any orders yet.</p>
+                        <a href="{% url 'store' %}" class="btn btn-primary mt-3">Continue Shopping</a>
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-exclamation-circle fa-4x text-warning mb-4"></i>
+                    <h4 class="text-muted">Please login to view your orders</h4>
+                    <a href="{% url 'user_login' %}" class="btn btn-primary mt-3">Login</a>
                 </div>
-                <br>
-            {% endfor %}
-            <br>
-        {% endif %}
+            {% endif %}
+            
+            {% if ordered %}
+            <div class="text-center py-4">
+                <blockquote class="blockquote">
+                    <p class="mb-0 text-muted">** That's it! **</p>
+                    <footer class="blockquote-footer">You've reached the end of your order history</footer>
+                </blockquote>
+            </div>
+            {% endif %}
+        </div>
     </div>
-    <br><br>
-    <blockquote class="blockquote text-center">
-        <p class="mb-0">** That's it! **</p>
-        <footer class="blockquote-footer"> You've scrolled to the end of the List!</footer>
-    </blockquote>
+</div>
+
+<style>
+    .order-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .item-row:hover {
+        background-color: rgba(173, 216, 230, 0.5) !important;
+        transform: scale(1.01);
+    }
+    
+    .order-header {
+        padding: 10px;
+    }
+    
+    @media (max-width: 768px) {
+        .cart-row {
+            flex-direction: column !important;
+        }
+        
+        .order-header, .item-row > div {
+            margin-bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .item-row {
+            height: auto !important;
+            padding: 15px !important;
+        }
+    }
+</style>
 {% endblock %}

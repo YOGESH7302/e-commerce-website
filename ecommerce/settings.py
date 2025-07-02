@@ -42,8 +42,11 @@ INSTALLED_APPS = [
     'accounts',
     'social_django',
     'crispy_forms',
-    'rest_framework'
+    'rest_framework',
+    'crispy_bootstrap4',
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',

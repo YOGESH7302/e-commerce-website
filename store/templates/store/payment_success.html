@@ -1,6 +1,46 @@
-<blockquote class="blockquote text-center" style="text-align: center; padding-top: 100">
-	<h1><p class="mb-0">** Payment Successful **</p></h1>
-	<h4><p>Go Back ! Check your orders - </p></h4>
-	<br>
-	<a href="{% url 'order_details' %}" class="btn btn-secondary mb-2">View Order</a>
+<blockquote class="blockquote text-center" style="
+    text-align: center; 
+    padding: 2rem;
+    margin: 3rem auto;
+    max-width: 600px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-left: 5px solid #28a745;
+    transition: transform 0.3s ease;
+">
+    <h1 style="
+        color: #28a745;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        font-size: 2.5rem;
+    ">
+        <p class="mb-0">✓ Payment Successful</p>
+    </h1>
+    <h4 style="
+        color: #495057;
+        font-weight: 400;
+        margin-bottom: 2rem;
+    ">
+        <p>Your order has been confirmed!</p>
+    </h4>
+    <a href="{% url 'order_details' %}" class="btn mb-2" style="
+        background: #28a745;
+        color: white;
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        border: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    ">
+        View Your Order
+    </a>
+    <p style="
+        margin-top: 1.5rem;
+        color: #6c757d;
+        font-size: 0.9rem;
+    ">
+        An email confirmation has been sent
+    </p>
 </blockquote>
